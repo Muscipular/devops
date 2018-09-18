@@ -1,0 +1,21 @@
+version: "3.4"
+services:
+  v2ray:
+    image: v2ray/official
+    # network-mode: host
+    volumes:
+      - /root/etc/v2ray/config.json:/etc/v2ray/config.json
+    networks: 
+      - host
+    deploy:
+      replicas: 1
+      restart_policy:
+        # condition: on-failure
+        delay: 5s
+networks:
+  host:
+    external: true
+    # name: "host"
+  # nonet:
+    # external: true
+    # name: "none"

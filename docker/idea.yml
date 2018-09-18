@@ -1,0 +1,28 @@
+version: "3.4"
+services:
+  idea:
+    image: alpine
+    ports:
+      - "14343:14343"
+    deploy:
+      replicas: 1
+      restart_policy:
+        # condition: on-failure
+        delay: 5s
+    volumes: 
+      - /root/etc/idea:/idea
+    logging:
+      driver: json-file
+      options:
+        max-size: 3m
+    command: 
+      - "/bin/sh"
+      - "-c"
+      - "/idea/IntelliJIDEALicenseServer_linux_amd64 -p 14343"
+networks:
+  host:
+    external: true
+    # name: "host"
+  # nonet:
+    # external: true
+    # name: "none"
