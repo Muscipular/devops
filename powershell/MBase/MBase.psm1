@@ -1,5 +1,5 @@
 
-function IsNullOrEmpty ([Parameter(Mandatory = $true)][string] $s) {
+function IsNullOrEmpty ([string] $s) {
     return [string]::IsNullOrEmpty($s)
 }
 
@@ -25,8 +25,8 @@ function CopyFiles ([Parameter(Mandatory = $true)]$s, [Parameter(Mandatory = $tr
     Copy-Item $s $d -Recurse -Force
 }
 
-function WarpArgument([string]$s, [switch]$ForchQuete) {
-    if ($s -inotmatch "[\\`" \t\n\r]" -and !$ForchQuete.IsPresent) {
+function WarpArgument([string]$s, [switch]$ForceQuete) {
+    if ($s -inotmatch "[\\`" \t\n\r]" -and !$ForceQuete.IsPresent) {
         return $s
     }
     $s2 = $s
@@ -81,6 +81,11 @@ function RemoveFiles([Parameter(Mandatory = $true)]$f, [bool]$log = $true, [int]
         }
         Start-Sleep -Milliseconds ms
     }
+}
+
+
+function GetDrives() {
+    return [System.IO.DriveInfo]::GetDrives() | where DriveType -EQ 3 | % {($_.Name +"_")[0] } | where { $_ -MATCH "[A-Z]"}
 }
 
 function RunAndWaitEx([Parameter(Mandatory = $true)][string]$FileName, [string[]]$Arguments = @(), [string]$WorkingDirectory = (Get-Location), [switch]$PassThru, [System.Text.Encoding]$Encoding = [System.Text.Encoding]::Default) {
@@ -150,5 +155,5 @@ Export-ModuleMember `
     -Function `
     RemoveFiles, FindInPath, IfThenElse, RunAndWait, WarpArgument, `
     CopyFiles, IsExists, IsExistsFile, IsExistsDirectory, IsNullOrEmpty, RunAndWaitEx, `
-    RunAsAdmin
+    RunAsAdmin, GetDrives
     
