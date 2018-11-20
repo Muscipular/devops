@@ -1,1 +1,0 @@
-git svn propget $args[0] | % {[System.Text.Encoding]::UTF8.GetString([System.Text.Encoding]::Default.GetBytes($_))}
