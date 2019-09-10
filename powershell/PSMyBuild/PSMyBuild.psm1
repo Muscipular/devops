@@ -42,3 +42,9 @@ function FindMsBuild () {
     }
     throw "MSBuild.exe not found."
 }
+
+function CleanProject(
+    [string] $Path = (Get-Location),
+    [switch] $Obj, [switch] $Bin) {
+        Get-ChildItem -Path $Path -Directory -Exclude @(".*","packages") | ForEach-Object {dir $_.Name -Directory | where {$_.Name -in (\"bin\",\"obj\")}| ForEach-Object {Remove-Item $_.FullName -Force -Recurse} } 
+}
